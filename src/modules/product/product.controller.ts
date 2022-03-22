@@ -14,9 +14,7 @@ export class ProductController {
     routingKey: 'product.add.route',
     queue: 'product.add.queue',
   })
-  async add(
-    @Body() addDto: AddProductRequestDto,
-  ): Promise<RmqResponse<string>> {
+  async add(addDto: AddProductRequestDto): Promise<RmqResponse<string>> {
     return this.productService.add(addDto);
   }
 
@@ -27,5 +25,14 @@ export class ProductController {
   })
   async getAll(): Promise<RmqResponse<ProductEntity[]>> {
     return this.productService.getAll();
+  }
+
+  @RabbitRPC({
+    exchange: 'amq.direct',
+    routingKey: 'product.get.by.id.route',
+    queue: 'product.get.by.id.queue',
+  })
+  async getById(id: number): Promise<RmqResponse<ProductEntity>> {
+    return this.productService.getById(id);
   }
 }
