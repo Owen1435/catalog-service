@@ -35,7 +35,7 @@ export class ProductService {
         ...addDto,
         type,
         status,
-        description: addDto.description ? JSON.parse(addDto.description) : null,
+        description: addDto.description ? addDto.description : null,
       };
 
       await this.productRepository.save(newProduct);

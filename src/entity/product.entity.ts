@@ -31,11 +31,5 @@ export class ProductEntity extends BaseEntity {
     type: 'varchar',
     nullable: true,
   })
-  childCategory: string; //todo
-
-  @Column({
-    type: 'varchar',
-    nullable: true,
-  })
-  parentCategory: string; //todo
+  category: string; //todo
 }

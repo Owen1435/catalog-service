@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { ProductService } from './product.service';
 import { AddProductRequestDto } from './dto/add.product.request.dto';

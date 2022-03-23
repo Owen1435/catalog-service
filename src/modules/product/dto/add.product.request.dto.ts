@@ -5,5 +5,5 @@ export class AddProductRequestDto {
   price: number;
   type: ProductType;
   status: string;
-  description?: string;
+  description?: object;
 }
