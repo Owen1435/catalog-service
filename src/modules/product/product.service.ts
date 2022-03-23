@@ -6,6 +6,7 @@ import { RmqResponse } from '../../../libs/common/rmq/rmq.response';
 import { ProductStatusRepository } from '../product-status/product-status.repository';
 import { ProductEntity } from '../../entity/product.entity';
 import { rmqErrorResponse } from '../../../libs/common/rmq/rmq-error.response';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 
 @Injectable()
 export class ProductService {
@@ -13,6 +14,7 @@ export class ProductService {
     private productRepository: ProductRepository,
     private productTypeRepository: ProductTypeRepository,
     private productStatusRepository: ProductStatusRepository,
+    private readonly amqpConnection: AmqpConnection,
   ) {}
 
   async add(addDto: AddProductRequestDto): Promise<RmqResponse<string>> {
@@ -38,7 +40,11 @@ export class ProductService {
         description: addDto.description ? addDto.description : null,
       };
 
-      await this.productRepository.save(newProduct);
+      const savedProduct = await this.productRepository.save(newProduct);
+
+      this.amqpConnection.publish('amq.direct', 'product.added.route', {
+        product: savedProduct,
+      });
 
       return new RmqResponse<string>('Add successes', HttpStatus.CREATED);
     } catch (error) {
