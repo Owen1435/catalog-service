@@ -42,7 +42,7 @@ export class ProductService {
 
       const savedProduct = await this.productRepository.save(newProduct);
 
-      this.amqpConnection.publish('amq.direct', 'product.added.route', {
+      this.amqpConnection.publish('product.added.exchange', '', {
         product: savedProduct,
       });
 
