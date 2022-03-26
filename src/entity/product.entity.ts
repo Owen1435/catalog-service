@@ -1,5 +1,6 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
+import { ProductCategoryEntity } from './product-category.entity';
 import { ProductStatusEntity } from './product-status.entity';
 import { ProductTypeEntity } from './product-type.entity';
 
@@ -11,15 +12,15 @@ export class ProductEntity extends BaseEntity {
   title: string;
 
   @Column({
+    type: 'numeric',
+  })
+  price: number;
+
+  @Column({
     type: 'jsonb',
     nullable: true,
   })
   description: object;
-
-  @Column({
-    type: 'numeric',
-  })
-  price: number;
 
   @ManyToOne(() => ProductStatusEntity, (status) => status.id)
   status: ProductStatusEntity;
@@ -27,9 +28,6 @@ export class ProductEntity extends BaseEntity {
   @ManyToOne(() => ProductTypeEntity, (type) => type.id)
   type: ProductTypeEntity;
 
-  @Column({
-    type: 'varchar',
-    nullable: true,
-  })
-  category: string; //todo
+  @OneToOne(() => ProductCategoryEntity, (category) => category.id)
+  category: ProductCategoryEntity;
 }
